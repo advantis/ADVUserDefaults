@@ -16,11 +16,11 @@
 #pragma mark - NSObject
 + (void) initialize
 {
-	[super initialize];
+    [super initialize];
 
-	NSURL *url = [[NSBundle mainBundle] URLForResource:@"Defaults" withExtension:@"plist"];
-	NSDictionary *defaults = [[NSDictionary alloc] initWithContentsOfURL:url];
-	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+    NSURL *url = [[NSBundle mainBundle] URLForResource:@"Defaults" withExtension:@"plist"];
+    NSDictionary *defaults = [[NSDictionary alloc] initWithContentsOfURL:url];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 }
 
 @end

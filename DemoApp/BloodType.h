@@ -7,10 +7,10 @@
 
 typedef enum
 {
-	BloodTypeA = 0,
-	BloodTypeB,
-	BloodTypeAB,
-	BloodTypeO
+    BloodTypeA = 0,
+    BloodTypeB,
+    BloodTypeAB,
+    BloodTypeO
 }
 BloodType;
 

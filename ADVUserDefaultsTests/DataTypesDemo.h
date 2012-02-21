@@ -7,9 +7,9 @@
 
 typedef enum
 {
-	ValueOne = -1,
-	ValueTwo,
-	ValueThree
+    ValueOne = -1,
+    ValueTwo,
+    ValueThree
 }
 EnumType;
 

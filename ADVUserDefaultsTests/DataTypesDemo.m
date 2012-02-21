@@ -34,21 +34,21 @@ static NSString * const kColorValueKey = @"ColorValue";
 
 - (UIColor *) colorValue
 {
-	NSData *data = [_defaults dataForKey:kColorValueKey];
-	return data ? [NSKeyedUnarchiver unarchiveObjectWithData:data] : nil;
+    NSData *data = [_defaults dataForKey:kColorValueKey];
+    return data ? [NSKeyedUnarchiver unarchiveObjectWithData:data] : nil;
 }
 
 - (void) setColorValue:(UIColor *)color
 {
-	if (color)
-	{
-		NSData *data = [NSKeyedArchiver archivedDataWithRootObject:color];
-		[_defaults setObject:data forKey:kColorValueKey];
-	}
-	else
-	{
-		[_defaults removeObjectForKey:kColorValueKey];
-	}
+    if (color)
+    {
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:color];
+        [_defaults setObject:data forKey:kColorValueKey];
+    }
+    else
+    {
+        [_defaults removeObjectForKey:kColorValueKey];
+    }
 }
 
 @end

@@ -7,17 +7,17 @@
 
 NSString * BloodTypeName(BloodType type)
 {
-	switch (type)
-	{
-		case BloodTypeA:
-			return @"A";
-		case BloodTypeB:
-			return @"B";
-		case BloodTypeAB:
-			return @"AB";
-		case BloodTypeO:
-			return @"O";
-		default:
-			return nil;
-	}
+    switch (type)
+    {
+        case BloodTypeA:
+            return @"A";
+        case BloodTypeB:
+            return @"B";
+        case BloodTypeAB:
+            return @"AB";
+        case BloodTypeO:
+            return @"O";
+        default:
+            return nil;
+    }
 }
