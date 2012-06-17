@@ -8,6 +8,12 @@
 #import "ADVUserDefaults.h"
 #import <objc/runtime.h>
 
+#ifndef __IPHONE_6_0
+    #define BLOCK_CAST (__bridge void*)
+#else
+    #define BLOCK_CAST
+#endif
+
 @interface ADVUserDefaults ()
 
 @property (nonatomic, readonly) NSUserDefaults *defaults;
@@ -183,10 +189,10 @@ static NSMutableDictionary *keyMappings_;
 
                 if (imp_implementationWithBlock)
                 {
-                    getterImp = imp_implementationWithBlock((__bridge void*) ^(ADVUserDefaults *this) {
+                    getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
                         return [[this->_defaults objectForKey:key] longLongValue];
                     });
-                    setterImp = imp_implementationWithBlock((__bridge void*) ^(ADVUserDefaults *this, long long value) {
+                    setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, long long value) {
                         NSNumber *object = [NSNumber numberWithLongLong:value];
                         [this->_defaults setObject:object forKey:key];
                     });
@@ -202,10 +208,10 @@ static NSMutableDictionary *keyMappings_;
 
                 if (imp_implementationWithBlock)
                 {
-                    getterImp = imp_implementationWithBlock((__bridge void*) ^(ADVUserDefaults *this) {
+                    getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
                         return [this->_defaults floatForKey:key];
                     });
-                    setterImp = imp_implementationWithBlock((__bridge void*) ^(ADVUserDefaults *this, float value) {
+                    setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, float value) {
                         [this->_defaults setFloat:value forKey:key];
                     });
                 }
@@ -220,10 +226,10 @@ static NSMutableDictionary *keyMappings_;
 
                 if (imp_implementationWithBlock)
                 {
-                    getterImp = imp_implementationWithBlock((__bridge void*) ^(ADVUserDefaults *this) {
+                    getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
                         return [this->_defaults doubleForKey:key];
                     });
-                    setterImp = imp_implementationWithBlock((__bridge void*) ^(ADVUserDefaults *this, double value) {
+                    setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, double value) {
                         [this->_defaults setDouble:value forKey:key];
                     });
                 }
@@ -238,10 +244,10 @@ static NSMutableDictionary *keyMappings_;
 
                 if (imp_implementationWithBlock)
                 {
-                    getterImp = imp_implementationWithBlock((__bridge void*) ^(ADVUserDefaults *this) {
+                    getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
                         return [this->_defaults objectForKey:key];
                     });
-                    setterImp = imp_implementationWithBlock((__bridge void*) ^(ADVUserDefaults *this, id value) {
+                    setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, id value) {
                         if (value)
                         {
                             [this->_defaults setObject:value forKey:key];
