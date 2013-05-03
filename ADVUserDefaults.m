@@ -110,7 +110,7 @@ static NSMutableDictionary *keyMappings_;
     NSString *key = nil;
     for (Class class = self; class; class = [class superclass])
     {
-        NSDictionary *mapping = keyMappings_[NSStringFromClass(class)];
+        NSDictionary *mapping = keyMappings_[class];
         if (mapping)
         {
             key = mapping[NSStringFromSelector(selector)];
@@ -129,7 +129,7 @@ static NSMutableDictionary *keyMappings_;
     if (0 < count && !imp_implementationWithBlock)
     {
         mapping = [[NSMutableDictionary alloc] initWithCapacity:(2 * count)];
-        keyMappings_[NSStringFromClass(self)] = mapping;
+        keyMappings_[(id<NSCopying>)self] = mapping;
     }
 
     for (int i = 0; i < count; ++i)
