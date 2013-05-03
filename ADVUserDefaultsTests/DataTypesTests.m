@@ -10,10 +10,6 @@
     property = value; \
     STAssertTrue(value == property, kUselessDescription);
 
-#define TestFloatingPointValueWithAccuracy(property, value, accuracy) \
-    property = value; \
-    STAssertTrue(value == property, kUselessDescription);
-
 #define TestObjectValue(property, value) \
     STAssertNotNil(value, @"Test value is nil"); \
     property = value; \
