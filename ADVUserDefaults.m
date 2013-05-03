@@ -32,8 +32,7 @@ static long long longLongGetter(ADVUserDefaults *self, SEL _cmd)
 static void longLongSetter(ADVUserDefaults *self, SEL _cmd, long long value)
 {
     NSString *key = [[self class] defaultsKeyForSelector:_cmd];
-    NSNumber *object = [NSNumber numberWithLongLong:value];
-    [self.defaults setObject:object forKey:key];
+    [self.defaults setObject:@(value) forKey:key];
 }
 
 static float floatGetter(ADVUserDefaults *self, SEL _cmd)
@@ -45,8 +44,7 @@ static float floatGetter(ADVUserDefaults *self, SEL _cmd)
 static void floatSetter(ADVUserDefaults *self, SEL _cmd, float value)
 {
     NSString *key = [[self class] defaultsKeyForSelector:_cmd];
-    NSNumber *object = [NSNumber numberWithFloat:value];
-    [self.defaults setObject:object forKey:key];
+    [self.defaults setObject:@(value) forKey:key];
 }
 
 static double doubleGetter(ADVUserDefaults *self, SEL _cmd)
@@ -58,8 +56,7 @@ static double doubleGetter(ADVUserDefaults *self, SEL _cmd)
 static void doubleSetter(ADVUserDefaults *self, SEL _cmd, double value)
 {
     NSString *key = [[self class] defaultsKeyForSelector:_cmd];
-    NSNumber *object = [NSNumber numberWithDouble:value];
-    [self.defaults setObject:object forKey:key];
+    [self.defaults setObject:@(value) forKey:key];
 }
 
 static id objectGetter(ADVUserDefaults *self, SEL _cmd)
@@ -113,10 +110,10 @@ static NSMutableDictionary *keyMappings_;
     NSString *key = nil;
     for (Class class = self; class; class = [class superclass])
     {
-        NSDictionary *mapping = [keyMappings_ objectForKey:NSStringFromClass(class)];
+        NSDictionary *mapping = keyMappings_[NSStringFromClass(class)];
         if (mapping)
         {
-            key = [mapping objectForKey:NSStringFromSelector(selector)];
+            key = mapping[NSStringFromSelector(selector)];
             if (key) break;
         }
     }
@@ -132,7 +129,7 @@ static NSMutableDictionary *keyMappings_;
     if (0 < count && !imp_implementationWithBlock)
     {
         mapping = [[NSMutableDictionary alloc] initWithCapacity:(2 * count)];
-        [keyMappings_ setObject:mapping forKey:NSStringFromClass(self)];
+        keyMappings_[NSStringFromClass(self)] = mapping;
     }
 
     for (int i = 0; i < count; ++i)
@@ -168,8 +165,8 @@ static NSMutableDictionary *keyMappings_;
         free(setter);
 
         NSString *key = [self defaultsKeyForPropertyNamed:name];
-        [mapping setValue:key forKey:NSStringFromSelector(getterSel)];
-        [mapping setValue:key forKey:NSStringFromSelector(setterSel)];
+        mapping[NSStringFromSelector(getterSel)] = key;
+        mapping[NSStringFromSelector(setterSel)] = key;
 
         IMP getterImp = NULL;
         IMP setterImp = NULL;
@@ -193,8 +190,7 @@ static NSMutableDictionary *keyMappings_;
                         return [[this->_defaults objectForKey:key] longLongValue];
                     });
                     setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, long long value) {
-                        NSNumber *object = [NSNumber numberWithLongLong:value];
-                        [this->_defaults setObject:object forKey:key];
+                        [this->_defaults setObject:@(value) forKey:key];
                     });
                 }
                 else

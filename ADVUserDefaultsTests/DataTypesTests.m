@@ -27,7 +27,7 @@
     STAssertNotNil(key, @"Key is nil");
     NSDate *value = [NSDate date];
     STAssertNotNil(value, @"Value is nil");
-    NSDictionary *defaults = [NSDictionary dictionaryWithObject:value forKey:key];
+    NSDictionary *defaults = @{key: value};
     STAssertNotNil(value, @"Defaults is nil");
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
     _defaults.dateValue = nil;
@@ -136,7 +136,7 @@
 
 - (void) testNumberValue
 {
-    NSNumber *numberValue = [NSNumber numberWithInt:42];
+    NSNumber *numberValue = @42;
     TestObjectValue(_defaults.numberValue, numberValue);
 }
 
@@ -148,16 +148,14 @@
 
 - (void) testArrayValue
 {
-    NSArray *arrayValue = [NSArray arrayWithObjects:
-            @"String", [NSNumber numberWithBool:YES], [NSDate date], nil];
+    NSArray *arrayValue = @[@"String", @YES, [NSDate date]];
     _defaults.arrayValue = arrayValue;
     STAssertTrue([_defaults.arrayValue isEqualToArray:arrayValue], kUselessDescription);
 }
 
 - (void) testDictionaryValue
 {
-    NSDictionary *dictionaryValue = [NSDictionary dictionaryWithObjectsAndKeys:
-            [NSArray array], @"Array", [NSDate date], @"Date", nil];
+    NSDictionary *dictionaryValue = @{@"Array": @[], @"Date": [NSDate date]};
     _defaults.dictionaryValue = dictionaryValue;
     STAssertTrue([_defaults.dictionaryValue isEqualToDictionary:dictionaryValue], kUselessDescription);
 }
