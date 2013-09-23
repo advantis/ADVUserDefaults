@@ -15,7 +15,6 @@
 
 + (NSString *) defaultsKeyForPropertyNamed:(char const *)propertyName;
 
-// TODO: Uncomment after this would be fixed for class methods
-// + (void) initialize __attribute__((objc_requires_super));
++ (void) initialize __attribute__((objc_requires_super));
 
 @end
