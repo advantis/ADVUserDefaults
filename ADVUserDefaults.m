@@ -14,68 +14,6 @@
     #define BLOCK_CAST
 #endif
 
-@interface ADVUserDefaults ()
-
-+ (NSString *) defaultsKeyForSelector:(SEL)selector;
-
-@end
-
-
-static long long longLongGetter(ADVUserDefaults *self, SEL _cmd)
-{
-    NSString *key = [[self class] defaultsKeyForSelector:_cmd];
-    return [[self.defaults objectForKey:key] longLongValue];
-}
-
-static void longLongSetter(ADVUserDefaults *self, SEL _cmd, long long value)
-{
-    NSString *key = [[self class] defaultsKeyForSelector:_cmd];
-    [self.defaults setObject:@(value) forKey:key];
-}
-
-static float floatGetter(ADVUserDefaults *self, SEL _cmd)
-{
-    NSString *key = [[self class] defaultsKeyForSelector:_cmd];
-    return [[self.defaults objectForKey:key] floatValue];
-}
-
-static void floatSetter(ADVUserDefaults *self, SEL _cmd, float value)
-{
-    NSString *key = [[self class] defaultsKeyForSelector:_cmd];
-    [self.defaults setObject:@(value) forKey:key];
-}
-
-static double doubleGetter(ADVUserDefaults *self, SEL _cmd)
-{
-    NSString *key = [[self class] defaultsKeyForSelector:_cmd];
-    return [[self.defaults objectForKey:key] doubleValue];
-}
-
-static void doubleSetter(ADVUserDefaults *self, SEL _cmd, double value)
-{
-    NSString *key = [[self class] defaultsKeyForSelector:_cmd];
-    [self.defaults setObject:@(value) forKey:key];
-}
-
-static id objectGetter(ADVUserDefaults *self, SEL _cmd)
-{
-    NSString *key = [[self class] defaultsKeyForSelector:_cmd];
-    return [self.defaults objectForKey:key];
-}
-
-static void objectSetter(ADVUserDefaults *self, SEL _cmd, id object)
-{
-    NSString *key = [[self class] defaultsKeyForSelector:_cmd];
-    if (object)
-    {
-        [self.defaults setObject:object forKey:key];
-    }
-    else
-    {
-        [self.defaults removeObjectForKey:key];
-    }
-}
-
 enum TypeEncodings
 {
     Char                = 'c',
@@ -93,8 +31,6 @@ enum TypeEncodings
     Object              = '@'
 };
 
-static NSMutableDictionary *keyMappings_;
-
 @implementation ADVUserDefaults
 
 #pragma mark - ADVUserDefaults
@@ -103,32 +39,10 @@ static NSMutableDictionary *keyMappings_;
     return [NSString stringWithFormat:@"%@.%s", self, propertyName];
 }
 
-+ (NSString *) defaultsKeyForSelector:(SEL)selector
-{
-    NSString *key = nil;
-    for (Class class = self; class; class = [class superclass])
-    {
-        NSDictionary *mapping = keyMappings_[class];
-        if (mapping)
-        {
-            key = mapping[NSStringFromSelector(selector)];
-            if (key) break;
-        }
-    }
-    return key;
-}
-
 + (void) generateAccessorMethods
 {
     unsigned int count = 0;
     objc_property_t *properties = class_copyPropertyList(self, &count);
-
-    NSMutableDictionary *mapping = nil;
-    if (0 < count && !imp_implementationWithBlock)
-    {
-        mapping = [[NSMutableDictionary alloc] initWithCapacity:(2 * count)];
-        keyMappings_[(id<NSCopying>)self] = mapping;
-    }
 
     for (int i = 0; i < count; ++i)
     {
@@ -163,8 +77,6 @@ static NSMutableDictionary *keyMappings_;
         free(setter);
 
         NSString *key = [self defaultsKeyForPropertyNamed:name];
-        mapping[NSStringFromSelector(getterSel)] = key;
-        mapping[NSStringFromSelector(setterSel)] = key;
 
         IMP getterImp = NULL;
         IMP setterImp = NULL;
@@ -180,90 +92,53 @@ static NSMutableDictionary *keyMappings_;
             case UnsignedShort:
             case UnsignedInt:
             case UnsignedLong:
-            case UnsignedLongLong:
-
-                if (imp_implementationWithBlock)
-                {
-                    getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
-                        return [[this->_defaults objectForKey:key] longLongValue];
-                    });
-                    setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, long long value) {
-                        [this->_defaults setObject:@(value) forKey:key];
-                    });
-                }
-                else
-                {
-                    getterImp = (IMP) longLongGetter;
-                    setterImp = (IMP) longLongSetter;
-                }
+            case UnsignedLongLong: {
+	            getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
+		            return [[this->_defaults objectForKey:key] longLongValue];
+	            });
+                setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, long long value) {
+	                [this->_defaults setObject:@(value) forKey:key];
+                });
+	            break;
+            }
+            case Float: {
+	            getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
+		            return [this->_defaults floatForKey:key];
+	            });
+                setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, float value) {
+	                [this->_defaults setFloat:value forKey:key];
+                });
                 break;
-
-            case Float:
-
-                if (imp_implementationWithBlock)
-                {
-                    getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
-                        return [this->_defaults floatForKey:key];
-                    });
-                    setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, float value) {
-                        [this->_defaults setFloat:value forKey:key];
-                    });
-                }
-                else
-                {
-                    getterImp = (IMP) floatGetter;
-                    setterImp = (IMP) floatSetter;
-                }
+            }
+            case Double: {
+	            getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
+		            return [this->_defaults doubleForKey:key];
+	            });
+                setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, double value) {
+	                [this->_defaults setDouble:value forKey:key];
+                });
                 break;
-
-            case Double:
-
-                if (imp_implementationWithBlock)
-                {
-                    getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
-                        return [this->_defaults doubleForKey:key];
-                    });
-                    setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, double value) {
-                        [this->_defaults setDouble:value forKey:key];
-                    });
-                }
-                else
-                {
-                    getterImp = (IMP) doubleGetter;
-                    setterImp = (IMP) doubleSetter;
-                }
+            }
+            case Object: {
+	            getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
+		            return [this->_defaults objectForKey:key];
+	            });
+                setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, id value) {
+	                if (value)
+	                {
+		                [this->_defaults setObject:value forKey:key];
+	                }
+	                else
+	                {
+		                [this->_defaults removeObjectForKey:key];
+	                }
+                });
                 break;
-
-            case Object:
-
-                if (imp_implementationWithBlock)
-                {
-                    getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
-                        return [this->_defaults objectForKey:key];
-                    });
-                    setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, id value) {
-                        if (value)
-                        {
-                            [this->_defaults setObject:value forKey:key];
-                        }
-                        else
-                        {
-                            [this->_defaults removeObjectForKey:key];
-                        }
-                    });
-                }
-                else
-                {
-                    getterImp = (IMP) objectGetter;
-                    setterImp = (IMP) objectSetter;
-                }
-                break;
-
+            }
             default:
                 free(properties);
                 [NSException raise:NSInternalInconsistencyException
                             format:@"Unsupported type of property \"%s\" in class %@", name, self];
-                break;
         }
 
         char types[5];
@@ -280,14 +155,7 @@ static NSMutableDictionary *keyMappings_;
 #pragma mark - NSObject
 + (void) initialize
 {
-    if ([ADVUserDefaults class] == self)
-    {
-        if (!imp_implementationWithBlock)
-        {
-            keyMappings_ = [[NSMutableDictionary alloc] initWithCapacity:1];
-        }
-    }
-    else
+    if ([ADVUserDefaults class] != self)
     {
         [self generateAccessorMethods];
     }
