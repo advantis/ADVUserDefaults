@@ -8,10 +8,8 @@
 #import <Foundation/Foundation.h>
 
 @interface ADVUserDefaults : NSObject
-{
-    @protected
-    NSUserDefaults *_defaults;
-}
+
+@property (readonly, nonatomic) NSUserDefaults *defaults;
 
 + (NSString *) defaultsKeyForPropertyNamed:(char const *)propertyName;
 

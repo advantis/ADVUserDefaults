@@ -16,8 +16,6 @@
 
 @interface ADVUserDefaults ()
 
-@property (nonatomic, readonly) NSUserDefaults *defaults;
-
 + (NSString *) defaultsKeyForSelector:(SEL)selector;
 
 @end
@@ -277,11 +275,6 @@ static NSMutableDictionary *keyMappings_;
         class_addMethod(self, setterSel, setterImp, types);
     }
     free(properties);
-}
-
-- (NSUserDefaults *) defaults
-{
-    return _defaults;
 }
 
 #pragma mark - NSObject
