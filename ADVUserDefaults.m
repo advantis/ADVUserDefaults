@@ -14,7 +14,7 @@
     #define BLOCK_CAST
 #endif
 
-enum TypeEncodings
+NS_ENUM(char, TypeEncodings)
 {
     Char                = 'c',
     Short               = 's',
