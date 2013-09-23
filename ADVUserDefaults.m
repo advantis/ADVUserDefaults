@@ -4,7 +4,6 @@
 //  Latest version can be found at http://github.com/advantis/ADVUserDefaults
 //
 
-
 #import "ADVUserDefaults.h"
 #import <objc/runtime.h>
 
@@ -80,7 +79,7 @@ NS_ENUM(char, TypeEncodings)
 
         IMP getterImp = NULL;
         IMP setterImp = NULL;
-        char type = attributes[1];
+        const char type = attributes[1];
         switch (type)
         {
             case Char:
@@ -163,8 +162,7 @@ NS_ENUM(char, TypeEncodings)
 
 - (id) init
 {
-    self = [super init];
-    if (self)
+    if ((self = [super init]))
     {
         _defaults = [NSUserDefaults new];
     }
