@@ -11,9 +11,9 @@
 @dynamic opacity;
 
 #pragma mark - ADVUserDefaults
-+ (NSString *) defaultsKeyForPropertyNamed:(char const *)propertyName
++ (NSString *)defaultsKeyForPropertyNamed:(NSString *)propertyName
 {
-    return [NSString stringWithFormat:@"CK%c%s", toupper(propertyName[0]), ++propertyName];
+    return [NSString stringWithFormat:@"CK%@", [propertyName uppercaseString]];
 }
 
 @end

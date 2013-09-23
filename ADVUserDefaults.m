@@ -33,9 +33,9 @@ NS_ENUM(char, TypeEncodings)
 @implementation ADVUserDefaults
 
 #pragma mark - ADVUserDefaults
-+ (NSString *) defaultsKeyForPropertyNamed:(char const *)propertyName
++ (NSString *) defaultsKeyForPropertyNamed:(NSString *)propertyName
 {
-    return [NSString stringWithFormat:@"%@.%s", self, propertyName];
+    return [NSString stringWithFormat:@"%@.%@", self, propertyName];
 }
 
 + (void) generateAccessorMethods
@@ -75,7 +75,8 @@ NS_ENUM(char, TypeEncodings)
         SEL setterSel = sel_registerName(setter);
         free(setter);
 
-        NSString *key = [self defaultsKeyForPropertyNamed:name];
+	    NSString *propertyName = [NSString stringWithUTF8String:name];
+	    NSString *key = [self defaultsKeyForPropertyNamed:propertyName];
 
         IMP getterImp = NULL;
         IMP setterImp = NULL;

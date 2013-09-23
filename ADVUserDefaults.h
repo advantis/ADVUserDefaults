@@ -11,6 +11,6 @@
 @property (readonly, nonatomic) NSUserDefaults *defaults;
 
 + (void) initialize __attribute__((objc_requires_super));
-+ (NSString *) defaultsKeyForPropertyNamed:(char const *)propertyName;
++ (NSString *) defaultsKeyForPropertyNamed:(NSString *)propertyName;
 
 @end
