@@ -14,11 +14,11 @@
 
 ##Subclassing notes
 
-If you override `+[NSObject initialize]` method in your subclass for some reason (for example, to provide dataset for registration domain), please be sure that you call `[super initialize]` because `ADVUserDefaults` must perform its initial setup in context of your subclass.
+If you override `+[NSObject initialize]` method in your subclass (for example, to provide an initial dataset for registration domain), please be sure that you call `[super initialize]` because `ADVUserDefaults` must perform its initial setup in context of your subclass.
 
 ##Min OS requirements
 
-iOS 2.0 or Mac OS X 10.5
+iOS 4.3 or Mac OS X 10.7 (iOS 2.0 or Mac OS X 10.5 in version tagged as 'legacy')
 
 ##License
 
