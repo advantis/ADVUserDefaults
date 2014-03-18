@@ -47,40 +47,38 @@ NS_ENUM(char, TypeEncodings)
     {
         objc_property_t property = properties[i];
         const char *name = property_getName(property);
-        const char *attributes = property_getAttributes(property);
 
-        char *getter = strstr(attributes, ",G");
-        if (getter)
-        {
-            getter = strdup(getter + 2);
-            getter = strsep(&getter, ",");
-        }
-        else
-        {
-            getter = strdup(name);
-        }
-        SEL getterSel = sel_registerName(getter);
-        free(getter);
+	    SEL getter;
+	    char *getterName = property_copyAttributeValue(property, "G");
+	    if (getterName)
+	    {
+			getter = sel_registerName(getterName);
+		    free(getterName);
+	    }
+	    else
+	    {
+		    getter = sel_registerName(name);
+	    }
 
-        char *setter = strstr(attributes, ",S");
-        if (setter)
+	    SEL setter;
+	    char *setterName = property_copyAttributeValue(property, "S");
+	    if (!setterName)
         {
-            setter = strdup(setter + 2);
-            setter = strsep(&setter, ",");
+	        asprintf(&setterName, "set%c%s:", toupper(name[0]), name + 1);
         }
-        else
-        {
-            asprintf(&setter, "set%c%s:", toupper(name[0]), name + 1);
-        }
-        SEL setterSel = sel_registerName(setter);
-        free(setter);
+	    setter = sel_registerName(setterName);
+	    free(setterName);
 
 	    NSString *propertyName = [NSString stringWithUTF8String:name];
 	    NSString *key = [self defaultsKeyForPropertyNamed:propertyName];
 
         IMP getterImp = NULL;
         IMP setterImp = NULL;
-        const char type = attributes[1];
+
+	    char *typeValue = property_copyAttributeValue(property, "T");
+	    const char type = typeValue[0];
+	    free(typeValue);
+	    
         switch (type)
         {
             case Char:
@@ -144,10 +142,10 @@ NS_ENUM(char, TypeEncodings)
         char types[5];
 
         snprintf(types, 4, "%c@:", type);
-        class_addMethod(self, getterSel, getterImp, types);
+        class_addMethod(self, getter, getterImp, types);
 
         snprintf(types, 5, "v@:%c", type);
-        class_addMethod(self, setterSel, setterImp, types);
+        class_addMethod(self, setter, setterImp, types);
     }
     free(properties);
 }
