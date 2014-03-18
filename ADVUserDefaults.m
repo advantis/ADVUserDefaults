@@ -13,6 +13,10 @@
     #define BLOCK_CAST
 #endif
 
+static char * AttributeType     = "T";
+static char * AttributeGetter   = "G";
+static char * AttributeSetter   = "S";
+
 NS_ENUM(char, TypeEncodings)
 {
     Char                = 'c',
@@ -49,7 +53,7 @@ NS_ENUM(char, TypeEncodings)
         const char *name = property_getName(property);
 
 	    SEL getter;
-	    char *getterName = property_copyAttributeValue(property, "G");
+	    char *getterName = property_copyAttributeValue(property, AttributeGetter);
 	    if (getterName)
 	    {
 			getter = sel_registerName(getterName);
@@ -61,7 +65,7 @@ NS_ENUM(char, TypeEncodings)
 	    }
 
 	    SEL setter;
-	    char *setterName = property_copyAttributeValue(property, "S");
+	    char *setterName = property_copyAttributeValue(property, AttributeSetter);
 	    if (!setterName)
         {
 	        asprintf(&setterName, "set%c%s:", toupper(name[0]), name + 1);
@@ -75,7 +79,7 @@ NS_ENUM(char, TypeEncodings)
         IMP getterImp = NULL;
         IMP setterImp = NULL;
 
-	    char *typeValue = property_copyAttributeValue(property, "T");
+	    char *typeValue = property_copyAttributeValue(property, AttributeType);
 	    const char type = typeValue[0];
 	    free(typeValue);
 	    
