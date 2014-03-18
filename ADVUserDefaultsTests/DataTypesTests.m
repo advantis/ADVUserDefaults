@@ -8,12 +8,12 @@
 
 #define TestScalarValue(property, value) \
     property = value; \
-    STAssertTrue(value == property, kUselessDescription);
+    XCTAssertTrue(value == property, kUselessDescription);
 
 #define TestObjectValue(property, value) \
-    STAssertNotNil(value, @"Test value is nil"); \
+    XCTAssertNotNil(value, @"Test value is nil"); \
     property = value; \
-    STAssertEqualObjects(property, value, kUselessDescription);
+    XCTAssertEqualObjects(property, value, kUselessDescription);
 
 @implementation DataTypesTests
 {
@@ -24,14 +24,14 @@
 - (void) testRegistrationDomain
 {
     NSString *key = [DataTypesDemo defaultsKeyForPropertyNamed:@"dateValue"];
-    STAssertNotNil(key, @"Key is nil");
+    XCTAssertNotNil(key, @"Key is nil");
     NSDate *value = [NSDate date];
-    STAssertNotNil(value, @"Value is nil");
+    XCTAssertNotNil(value, @"Value is nil");
     NSDictionary *defaults = @{key: value};
-    STAssertNotNil(value, @"Defaults is nil");
+    XCTAssertNotNil(value, @"Defaults is nil");
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
     _defaults.dateValue = nil;
-    STAssertEqualObjects(_defaults.dateValue, value, kUselessDescription);
+    XCTAssertEqualObjects(_defaults.dateValue, value, kUselessDescription);
 }
 
 #pragma mark - Scalar Data Types
@@ -98,25 +98,25 @@
 - (void) testEdgeCasesForFloat
 {
     _defaults.floatValue = FLT_MIN;
-    STAssertEqualsWithAccuracy(_defaults.floatValue, FLT_MIN, FLT_MIN, kUselessDescription);
+    XCTAssertEqualWithAccuracy(_defaults.floatValue, FLT_MIN, FLT_MIN, kUselessDescription);
     _defaults.floatValue = -FLT_MIN;
-    STAssertEqualsWithAccuracy(_defaults.floatValue, -FLT_MIN, FLT_MIN, kUselessDescription);
+    XCTAssertEqualWithAccuracy(_defaults.floatValue, -FLT_MIN, FLT_MIN, kUselessDescription);
     _defaults.floatValue = FLT_MAX;
-    STAssertEqualsWithAccuracy(_defaults.floatValue, FLT_MAX, FLT_MIN, kUselessDescription);
+    XCTAssertEqualWithAccuracy(_defaults.floatValue, FLT_MAX, FLT_MIN, kUselessDescription);
     _defaults.floatValue = -FLT_MAX;
-    STAssertEqualsWithAccuracy(_defaults.floatValue, -FLT_MAX, FLT_MIN, kUselessDescription);
+    XCTAssertEqualWithAccuracy(_defaults.floatValue, -FLT_MAX, FLT_MIN, kUselessDescription);
 }
 
 - (void) testEdgeCasesForDouble
 {
     _defaults.doubleValue = DBL_MIN;
-    STAssertEqualsWithAccuracy(_defaults.doubleValue, DBL_MIN, DBL_MIN, kUselessDescription);
+    XCTAssertEqualWithAccuracy(_defaults.doubleValue, DBL_MIN, DBL_MIN, kUselessDescription);
     _defaults.doubleValue = -DBL_MIN;
-    STAssertEqualsWithAccuracy(_defaults.doubleValue, -DBL_MIN, DBL_MIN, kUselessDescription);
+    XCTAssertEqualWithAccuracy(_defaults.doubleValue, -DBL_MIN, DBL_MIN, kUselessDescription);
     _defaults.doubleValue = DBL_MAX;
-    STAssertEqualsWithAccuracy(_defaults.doubleValue, DBL_MAX, DBL_MIN, kUselessDescription);
+    XCTAssertEqualWithAccuracy(_defaults.doubleValue, DBL_MAX, DBL_MIN, kUselessDescription);
     _defaults.doubleValue = -DBL_MAX;
-    STAssertEqualsWithAccuracy(_defaults.doubleValue, -DBL_MAX, DBL_MIN, kUselessDescription);
+    XCTAssertEqualWithAccuracy(_defaults.doubleValue, -DBL_MAX, DBL_MIN, kUselessDescription);
 }
 
 #pragma mark - Object Data Types
@@ -150,14 +150,14 @@
 {
     NSArray *arrayValue = @[@"String", @YES, [NSDate date]];
     _defaults.arrayValue = arrayValue;
-    STAssertTrue([_defaults.arrayValue isEqualToArray:arrayValue], kUselessDescription);
+    XCTAssertTrue([_defaults.arrayValue isEqualToArray:arrayValue], kUselessDescription);
 }
 
 - (void) testDictionaryValue
 {
     NSDictionary *dictionaryValue = @{@"Array": @[], @"Date": [NSDate date]};
     _defaults.dictionaryValue = dictionaryValue;
-    STAssertTrue([_defaults.dictionaryValue isEqualToDictionary:dictionaryValue], kUselessDescription);
+    XCTAssertTrue([_defaults.dictionaryValue isEqualToDictionary:dictionaryValue], kUselessDescription);
 }
 
 #pragma mark - Additional Data Types
@@ -190,14 +190,14 @@
 {
     _defaults.stringValue = @"Will be replaced with nil";
     _defaults.stringValue = nil;
-    STAssertNil(_defaults.stringValue, kUselessDescription);
+    XCTAssertNil(_defaults.stringValue, kUselessDescription);
 }
 
 - (void) testColorValue
 {
     UIColor *color = [UIColor magentaColor];
     _defaults.colorValue = color;
-    STAssertTrue(CGColorEqualToColor(_defaults.colorValue.CGColor, color.CGColor), kUselessDescription);
+    XCTAssertTrue(CGColorEqualToColor(_defaults.colorValue.CGColor, color.CGColor), kUselessDescription);
 }
 
 #pragma mark - SenTestCase
@@ -206,7 +206,7 @@
     [super setUp];
 
     _defaults = [DataTypesDemo new];
-    STAssertNotNil(_defaults, @"Unable to create an instance of %@", [DataTypesDemo class]);
+    XCTAssertNotNil(_defaults, @"Unable to create an instance of %@", [DataTypesDemo class]);
 }
 
 - (void) tearDown

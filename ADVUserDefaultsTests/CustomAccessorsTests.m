@@ -17,7 +17,7 @@
     [super setUp];
 
     _defaults = [CustomAccessorsDemo new];
-    STAssertNotNil(_defaults, @"Unable to create an instance of %@", [CustomAccessorsDemo class]);
+    XCTAssertNotNil(_defaults, @"Unable to create an instance of %@", [CustomAccessorsDemo class]);
 }
 
 - (void) tearDown
@@ -30,14 +30,14 @@
 - (void) testCustomGetter
 {
     _defaults.customGetter = YES;
-    STAssertEquals([_defaults isCustomGetter], YES, kUselessDescription);
+    XCTAssertEqual([_defaults isCustomGetter], YES, kUselessDescription);
 }
 
 - (void) testCustomSetter
 {
     NSString *value = @"Custom";
     [_defaults specifyCustomSetter:value];
-    STAssertEqualObjects(_defaults.customSetter, value, kUselessDescription);
+    XCTAssertEqualObjects(_defaults.customSetter, value, kUselessDescription);
 }
 
 @end

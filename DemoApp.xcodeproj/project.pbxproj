@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		502234C318D874D600A15F39 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 502234C218D874D600A15F39 /* XCTest.framework */; };
 		5067A551173409F3001DACC5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5067A550173409F3001DACC5 /* Default-568h@2x.png */; };
 		6A1048CC14DEB06300F130DD /* CustomAccessorsDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AE9467C14D755E200B899FA /* CustomAccessorsDemo.m */; };
 		6A1048CD14DEB06300F130DD /* CustomKeysDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD7280F14D5980300B17EF9 /* CustomKeysDemo.m */; };
@@ -19,7 +20,6 @@
 		6AD727DC14D5903000B17EF8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD727DB14D5903000B17EF8 /* main.m */; };
 		6AD727E014D5903000B17EF8 /* ApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD727DF14D5903000B17EF8 /* ApplicationDelegate.m */; };
 		6AD727E314D5903000B17EF8 /* EditDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD727E214D5903000B17EF8 /* EditDetailsViewController.m */; };
-		6AD727EE14D5903000B17EF8 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD727ED14D5903000B17EF8 /* SenTestingKit.framework */; };
 		6AD727EF14D5903000B17EF8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD727CF14D5903000B17EF8 /* UIKit.framework */; };
 		6AD727F014D5903000B17EF8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD727D114D5903000B17EF8 /* Foundation.framework */; };
 		6AE9467C14D755E200B899F9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD727D314D5903000B17EF8 /* CoreGraphics.framework */; };
@@ -44,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		502234C218D874D600A15F39 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		5067A550173409F3001DACC5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		6A3401D414E9BCB50050E189 /* ADVUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADVUserDefaults.h; sourceTree = SOURCE_ROOT; };
 		6A3401D514E9BCB50050E189 /* ADVUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADVUserDefaults.m; sourceTree = SOURCE_ROOT; };
@@ -62,8 +63,7 @@
 		6AD727DF14D5903000B17EF8 /* ApplicationDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationDelegate.m; sourceTree = "<group>"; };
 		6AD727E114D5903000B17EF8 /* EditDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditDetailsViewController.h; sourceTree = "<group>"; };
 		6AD727E214D5903000B17EF8 /* EditDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditDetailsViewController.m; sourceTree = "<group>"; };
-		6AD727EC14D5903000B17EF8 /* ADVUserDefaultsTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ADVUserDefaultsTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6AD727ED14D5903000B17EF8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		6AD727EC14D5903000B17EF8 /* ADVUserDefaultsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ADVUserDefaultsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AD727F514D5903000B17EF8 /* ADVUserDefaultsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ADVUserDefaultsTests-Info.plist"; sourceTree = "<group>"; };
 		6AD7280F14D5980300B17EF9 /* CustomKeysDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomKeysDemo.m; sourceTree = "<group>"; };
 		6AD7280F14D5980300B17EFB /* CustomKeysDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomKeysDemo.h; sourceTree = "<group>"; };
@@ -100,8 +100,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				502234C318D874D600A15F39 /* XCTest.framework in Frameworks */,
 				6AE9467C14D755E200B899F9 /* CoreGraphics.framework in Frameworks */,
-				6AD727EE14D5903000B17EF8 /* SenTestingKit.framework in Frameworks */,
 				6AD727EF14D5903000B17EF8 /* UIKit.framework in Frameworks */,
 				6AD727F014D5903000B17EF8 /* Foundation.framework in Frameworks */,
 			);
@@ -188,7 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				6AD727CB14D5903000B17EF8 /* DemoApp.app */,
-				6AD727EC14D5903000B17EF8 /* ADVUserDefaultsTests.octest */,
+				6AD727EC14D5903000B17EF8 /* ADVUserDefaultsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -196,10 +196,10 @@
 		6AD727CE14D5903000B17EF8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				502234C218D874D600A15F39 /* XCTest.framework */,
 				6AD727CF14D5903000B17EF8 /* UIKit.framework */,
 				6AD727D114D5903000B17EF8 /* Foundation.framework */,
 				6AD727D314D5903000B17EF8 /* CoreGraphics.framework */,
-				6AD727ED14D5903000B17EF8 /* SenTestingKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -311,8 +311,8 @@
 			);
 			name = ADVUserDefaultsTests;
 			productName = UserDefaultsTests;
-			productReference = 6AD727EC14D5903000B17EF8 /* ADVUserDefaultsTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = 6AD727EC14D5903000B17EF8 /* ADVUserDefaultsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -320,6 +320,7 @@
 		6AD727C214D5902F00B17EF8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastTestingUpgradeCheck = 0510;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = Advantis;
 			};
@@ -514,14 +515,14 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DemoApp/DemoApp-Prefix.pch";
 				INFOPLIST_FILE = "ADVUserDefaultsTests/ADVUserDefaultsTests-Info.plist";
 				PRODUCT_NAME = ADVUserDefaultsTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -532,14 +533,14 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DemoApp/DemoApp-Prefix.pch";
 				INFOPLIST_FILE = "ADVUserDefaultsTests/ADVUserDefaultsTests-Info.plist";
 				PRODUCT_NAME = ADVUserDefaultsTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};

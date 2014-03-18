@@ -17,7 +17,7 @@
     [super setUp];
 
     _defaults = [CustomKeysDemo new];
-    STAssertNotNil(_defaults, @"Unable to create an instance of %@", [CustomKeysDemo class]);
+    XCTAssertNotNil(_defaults, @"Unable to create an instance of %@", [CustomKeysDemo class]);
 }
 
 - (void) tearDown
@@ -33,10 +33,10 @@
 
     const float CDOpacity = 0.4f;
     [defaults setFloat:CDOpacity forKey:@"CKOpacity"];
-    STAssertEquals(_defaults.opacity, CDOpacity, kUselessDescription);
+    XCTAssertEqual(_defaults.opacity, CDOpacity, kUselessDescription);
 
     [defaults setBool:YES forKey:@"CKHidden"];
-    STAssertEquals([_defaults isHidden], YES, kUselessDescription);
+    XCTAssertEqual([_defaults isHidden], YES, kUselessDescription);
 }
 
 - (void) testWriting
@@ -45,10 +45,10 @@
 
     const float CDOpacity = 0.3f;
     _defaults.opacity = CDOpacity;
-    STAssertEquals([defaults floatForKey:@"CKOpacity"], CDOpacity, kUselessDescription);
+    XCTAssertEqual([defaults floatForKey:@"CKOpacity"], CDOpacity, kUselessDescription);
 
     _defaults.hidden = YES;
-    STAssertEquals([defaults boolForKey:@"CKHidden"], YES, kUselessDescription);
+    XCTAssertEqual([defaults boolForKey:@"CKHidden"], YES, kUselessDescription);
 }
 
 @end

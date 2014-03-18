@@ -3,10 +3,10 @@
 //
 
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-extern NSString * const kUselessDescription;
+#define kUselessDescription @"Value mismatch"
 
-@interface BaseTest : SenTestCase
+@interface BaseTest : XCTestCase
 
 @end

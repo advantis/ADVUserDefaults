@@ -5,8 +5,6 @@
 
 #import "BaseTest.h"
 
-NSString * const kUselessDescription = @"Value mismatch";
-
 @implementation BaseTest
 {
     NSDictionary *_appDomain;
