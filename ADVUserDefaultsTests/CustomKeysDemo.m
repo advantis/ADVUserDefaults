@@ -13,7 +13,7 @@
 #pragma mark - ADVUserDefaults
 + (NSString *)defaultsKeyForPropertyNamed:(NSString *)propertyName
 {
-    return [NSString stringWithFormat:@"CK%@", [propertyName uppercaseString]];
+    return [NSString stringWithFormat:@"CK%@", [propertyName capitalizedString]];
 }
 
 @end
