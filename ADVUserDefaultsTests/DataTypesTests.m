@@ -23,7 +23,7 @@
 #pragma mark - DataTypesTests
 - (void) testRegistrationDomain
 {
-    NSString *key = [DataTypesDemo defaultsKeyForPropertyNamed:"dateValue"];
+    NSString *key = [DataTypesDemo defaultsKeyForPropertyNamed:@"dateValue"];
     STAssertNotNil(key, @"Key is nil");
     NSDate *value = [NSDate date];
     STAssertNotNil(value, @"Value is nil");
