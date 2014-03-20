@@ -133,6 +133,10 @@ NS_INLINE BOOL PropertyIsDynamic(objc_property_t property)
 	    const char *name = property_getName(property);
 	    NSString *propertyName = [NSString stringWithUTF8String:name];
 	    NSString *key = [self defaultsKeyForPropertyNamed:propertyName];
+	    NSAssert(key, @"+[%@ %@] did return nil for property named '%@'",
+	        NSStringFromClass(self),
+	        NSStringFromSelector(@selector(defaultsKeyForPropertyNamed:)),
+	        propertyName);
 
 	    char *type = property_copyAttributeValue(property, AttributeType);
 	    char typeEncoding[2] = { type[0], '\0' };
