@@ -10,7 +10,7 @@
 
 @property (readonly, nonatomic) NSUserDefaults *defaults;
 
-+ (void) initialize __attribute__((objc_requires_super));
++ (void) initialize NS_REQUIRES_SUPER;
 + (NSString *) defaultsKeyForPropertyNamed:(NSString *)propertyName;
 
 @end
