@@ -16,140 +16,152 @@
 static char * AttributeType     = "T";
 static char * AttributeGetter   = "G";
 static char * AttributeSetter   = "S";
+static char * AttributeDynamic  = "D";
 
-NS_ENUM(char, TypeEncodings)
+NS_INLINE SEL PropertyGetter(objc_property_t property)
 {
-    Char                = 'c',
-    Short               = 's',
-    Int                 = 'i',
-    Long                = 'l',
-    LongLong            = 'q',
-    UnsignedChar        = 'C',
-    UnsignedShort       = 'S',
-    UnsignedInt         = 'I',
-    UnsignedLong        = 'L',
-    UnsignedLongLong    = 'Q',
-    Float               = 'f',
-    Double              = 'd',
-    Object              = '@'
+	SEL getter;
+
+	char *getterName = property_copyAttributeValue(property, AttributeGetter);
+	if (getterName)
+	{
+		getter = sel_registerName(getterName);
+		free(getterName);
+	}
+	else
+	{
+		getter = sel_registerName(property_getName(property));
+	}
+
+	return getter;
 };
+
+NS_INLINE SEL PropertySetter(objc_property_t property)
+{
+	SEL setter;
+
+	char *setterName = property_copyAttributeValue(property, AttributeSetter);
+	if (!setterName)
+	{
+		const char *propertyName = property_getName(property);
+		asprintf(&setterName, "set%c%s:", toupper(propertyName[0]), propertyName + 1);
+	}
+	setter = sel_registerName(setterName);
+	free(setterName);
+
+	return setter;
+};
+
+NS_INLINE BOOL PropertyIsDynamic(objc_property_t property)
+{
+	BOOL isDynamic = NO;
+
+	char *dynamic = property_copyAttributeValue(property, AttributeDynamic);
+	if (dynamic)
+	{
+		isDynamic = YES;
+		free(dynamic);
+	}
+
+	return isDynamic;
+}
+
+#define ScalarMapping(type, selector)                                                                       \
+	    @(@encode(type)) : ^(NSString *key, IMP *getter, IMP *setter) {                                     \
+		    *getter = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {                     \
+			    return [[this.defaults objectForKey:key] selector];                                         \
+		    });                                                                                             \
+		    *setter = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, type value) {         \
+			    [this.defaults setObject:@(value) forKey:key];                                              \
+		    });                                                                                             \
+	    }                                                                                                   \
+
+
+@interface ADVUserDefaults ()
+@property (strong, nonatomic) NSUserDefaults *defaults;
+@end
 
 @implementation ADVUserDefaults
 
 #pragma mark - ADVUserDefaults
 + (NSString *) defaultsKeyForPropertyNamed:(NSString *)propertyName
 {
-    return [NSString stringWithFormat:@"%@.%@", self, propertyName];
+    return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self), propertyName];
 }
 
 + (void) generateAccessorMethods
 {
+	NSDictionary *typeMapping = @{
+		ScalarMapping(int, intValue),
+		ScalarMapping(char, charValue),
+		ScalarMapping(long, longValue),
+		ScalarMapping(short, shortValue),
+		ScalarMapping(float, floatValue),
+		ScalarMapping(double, doubleValue),
+		ScalarMapping(long long, longLongValue),
+		ScalarMapping(unsigned int, unsignedIntValue),
+		ScalarMapping(unsigned char, unsignedCharValue),
+		ScalarMapping(unsigned long, unsignedLongValue),
+		ScalarMapping(unsigned short, unsignedShortValue),
+		ScalarMapping(unsigned long long, unsignedLongLongValue),
+		@(@encode(id)) : ^(NSString *key, IMP *getter, IMP *setter) {
+		    *getter = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
+			    return [this.defaults objectForKey:key];
+		    });
+		    *setter = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, id object) {
+			    if (object)
+			    {
+				    [this.defaults setObject:object forKey:key];
+			    }
+			    else
+			    {
+				    [this.defaults removeObjectForKey:key];
+			    }
+		    });
+	    }
+	};
+
     unsigned int count = 0;
     objc_property_t *properties = class_copyPropertyList(self, &count);
 
-    for (int i = 0; i < count; ++i)
+    for (unsigned int i = 0; i < count; ++i)
     {
         objc_property_t property = properties[i];
-        const char *name = property_getName(property);
 
-	    SEL getter;
-	    char *getterName = property_copyAttributeValue(property, AttributeGetter);
-	    if (getterName)
-	    {
-			getter = sel_registerName(getterName);
-		    free(getterName);
-	    }
-	    else
-	    {
-		    getter = sel_registerName(name);
-	    }
+	    if (!PropertyIsDynamic(property)) continue;
 
-	    SEL setter;
-	    char *setterName = property_copyAttributeValue(property, AttributeSetter);
-	    if (!setterName)
-        {
-	        asprintf(&setterName, "set%c%s:", toupper(name[0]), name + 1);
-        }
-	    setter = sel_registerName(setterName);
-	    free(setterName);
-
+	    const char *name = property_getName(property);
 	    NSString *propertyName = [NSString stringWithUTF8String:name];
 	    NSString *key = [self defaultsKeyForPropertyNamed:propertyName];
 
-        IMP getterImp = NULL;
-        IMP setterImp = NULL;
+	    char *type = property_copyAttributeValue(property, AttributeType);
+	    char typeEncoding[2] = { type[0], '\0' };
+	    free(type);
 
-	    char *typeValue = property_copyAttributeValue(property, AttributeType);
-	    const char type = typeValue[0];
-	    free(typeValue);
-	    
-        switch (type)
-        {
-            case Char:
-            case Short:
-            case Int:
-            case Long:
-            case LongLong:
-            case UnsignedChar:
-            case UnsignedShort:
-            case UnsignedInt:
-            case UnsignedLong:
-            case UnsignedLongLong: {
-	            getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
-		            return [[this->_defaults objectForKey:key] longLongValue];
-	            });
-                setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, long long value) {
-	                [this->_defaults setObject:@(value) forKey:key];
-                });
-	            break;
-            }
-            case Float: {
-	            getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
-		            return [this->_defaults floatForKey:key];
-	            });
-                setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, float value) {
-	                [this->_defaults setFloat:value forKey:key];
-                });
-                break;
-            }
-            case Double: {
-	            getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
-		            return [this->_defaults doubleForKey:key];
-	            });
-                setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, double value) {
-	                [this->_defaults setDouble:value forKey:key];
-                });
-                break;
-            }
-            case Object: {
-	            getterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this) {
-		            return [this->_defaults objectForKey:key];
-	            });
-                setterImp = imp_implementationWithBlock(BLOCK_CAST ^(ADVUserDefaults *this, id value) {
-	                if (value)
-	                {
-		                [this->_defaults setObject:value forKey:key];
-	                }
-	                else
-	                {
-		                [this->_defaults removeObjectForKey:key];
-	                }
-                });
-                break;
-            }
-            default:
-                free(properties);
-                [NSException raise:NSInternalInconsistencyException
-                            format:@"Unsupported type of property \"%s\" in class %@", name, self];
-        }
+	    IMP getterImp = NULL;
+	    IMP setterImp = NULL;
+	    typedef void(^AccessorsGenerationBlock)(NSString *, IMP *, IMP *);
+	    AccessorsGenerationBlock block = typeMapping[@(typeEncoding)];
+	    if (block)
+	    {
+		    block(key, &getterImp, &setterImp);
+	    }
+	    else
+	    {
+		    free(properties);
+		    [NSException raise:NSInternalInconsistencyException
+		                format:@"Unsupported type of property \"%s\" in class %@", name, self];
+	    }
 
         char types[5];
 
-        snprintf(types, 4, "%c@:", type);
-        class_addMethod(self, getter, getterImp, types);
+        snprintf(types, 4, "%s@:", typeEncoding);
+	    SEL getter = PropertyGetter(property);
+	    class_addMethod(self, getter, getterImp, types);
 
-        snprintf(types, 5, "v@:%c", type);
-        class_addMethod(self, setter, setterImp, types);
+        snprintf(types, 5, "v@:%s", typeEncoding);
+	    SEL setter = PropertySetter(property);
+	    class_addMethod(self, setter, setterImp, types);
     }
     free(properties);
 }
