@@ -95,6 +95,7 @@ NS_INLINE BOOL PropertyIsDynamic(objc_property_t property)
         ScalarMapping(int, intValue),
         ScalarMapping(char, charValue),
         ScalarMapping(long, longValue),
+        ScalarMapping(BOOL, boolValue),
         ScalarMapping(short, shortValue),
         ScalarMapping(float, floatValue),
         ScalarMapping(double, doubleValue),
