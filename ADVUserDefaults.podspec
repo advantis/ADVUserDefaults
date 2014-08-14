@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ADVUserDefaults"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "Easy access to the User Defaults System"
   s.description  = <<-DESC
     `ADVUserDefaults` is a wrapper that simplifies and formalizes usage of the User Defaults System in your app. 
