@@ -10,6 +10,7 @@
 * Abstract superclass for user defaults model classes.
 * Automatically generates accessor methods for any declared dynamic properties.
 */
+NS_REQUIRES_PROPERTY_DEFINITIONS
 @interface ADVUserDefaults : NSObject
 
 /**
