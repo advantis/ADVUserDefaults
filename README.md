@@ -1,10 +1,11 @@
-`ADVUserDefaults` is a `NSUserDetaults` wrapper that simplifies and formalizes usage of the defaults system in your app. Please see DemoApp project for more details.
+`ADVUserDefaults` is a `NSUserDetaults` wrapper that simplifies and formalizes usage of the User Defaults System in your app. Please see DemoApp project for more details.
 
 ##Features
 
 - supports both manual reference counting and ARC
 - supports all data types supported by `NSUserDefaults`
 - you can specify custom key names for your properties
+- supports integration using CocoaPods
 
 ##Usage
 
