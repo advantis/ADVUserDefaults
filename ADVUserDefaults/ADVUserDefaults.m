@@ -83,6 +83,8 @@ NS_INLINE BOOL PropertyIsDynamic(objc_property_t property)
 
 @implementation ADVUserDefaults
 
+@synthesize defaults = _defaults;
+
 #pragma mark - ADVUserDefaults
 + (NSString *) defaultsKeyForPropertyNamed:(NSString *)propertyName
 {
