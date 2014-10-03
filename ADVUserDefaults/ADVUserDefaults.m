@@ -173,6 +173,16 @@ NS_INLINE BOOL PropertyIsDynamic(objc_property_t property)
     free(properties);
 }
 
+- (instancetype) initWithUserDefaults:(NSUserDefaults *)defaults
+{
+    NSParameterAssert(defaults);
+    if ((self = [super init]))
+    {
+        _defaults = defaults;
+    }
+    return self;
+}
+
 #pragma mark - NSObject
 + (void) initialize
 {
@@ -184,11 +194,7 @@ NS_INLINE BOOL PropertyIsDynamic(objc_property_t property)
 
 - (id) init
 {
-    if ((self = [super init]))
-    {
-        _defaults = [NSUserDefaults new];
-    }
-    return self;
+    return [self initWithUserDefaults:[NSUserDefaults new]];
 }
 
 - (void) dealloc
