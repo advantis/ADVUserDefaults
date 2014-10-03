@@ -27,7 +27,7 @@ NS_REQUIRES_PROPERTY_DEFINITIONS
 *
 * @return An initialized ADVUserDefaults object
 */
-- (instancetype) initWithUserDefaults:(NSUserDefaults *)defaults NS_DESIGNATED_INITIALIZER __attribute__((nonnull (1)));
+- (instancetype) initWithUserDefaults:(NSUserDefaults *)defaults NS_DESIGNATED_INITIALIZER __attribute__((nonnull));
 
 /**
 * Is used to dynamically generate appropriate property accessors on class initialization
