@@ -21,6 +21,15 @@ NS_REQUIRES_PROPERTY_DEFINITIONS
 @property (readonly, nonatomic) NSUserDefaults *defaults;
 
 /**
+* Designated initializer
+*
+* @param defaults A NSUserDefaults object (must not be nil)
+*
+* @return An initialized ADVUserDefaults object
+*/
+- (instancetype) initWithUserDefaults:(NSUserDefaults *)defaults NS_DESIGNATED_INITIALIZER __attribute__((nonnull (1)));
+
+/**
 * Is used to dynamically generate appropriate property accessors on class initialization
 *
 * @warning If you override this method, please make sure that you invoke a 'super' implementation
